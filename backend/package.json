@@ -1,0 +1,23 @@
+{
+  "name": "meanauthapp",
+  "version": "1.0.0",
+  "description": "MEAN stack authentication app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "dependencies": {
+    "bcryptjs": "*",
+    "cors": "*",
+    "express": "*",
+    "jsonwebtoken": "*",
+    "lodash": "^4.17.21",
+    "mongoose": "*",
+    "nodemon": "^2.0.7",
+    "passport": "*",
+    "passport-jwt": "*"
+  },
+  "author": "Stephen Grouios",
+  "license": "ISC"
+}
