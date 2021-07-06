@@ -1,1 +1,50 @@
-<p>register works!</p>
+<div class="m-5">
+  <h2 class="page-header">Register</h2>
+  <form [formGroup]="form">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        class="form-control border border-secondary"
+        id="name"
+        aria-describedby="nameHelp"
+        formControlName="name"
+      />
+      <p *ngIf="form.controls.name.touched && !form.controls.name.valid" class="text-danger">Please enter a name</p>
+    </div>
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        class="form-control border border-secondary"
+        id="username"
+        aria-describedby="usernameHelp"
+        formControlName="username"
+      />
+      <p *ngIf="form.controls.username.touched && !form.controls.username.valid" class="text-danger">Please enter a username</p>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input
+        type="email"
+        class="form-control border border-secondary"
+        id="email"
+        aria-describedby="emailHelp"
+        formControlName="email"
+      />
+      <p *ngIf="form.controls.email.touched && !form.controls.email.valid" class="text-danger">Please enter a valid email</p>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="text"
+        class="form-control border border-secondary"
+        id="password"
+        aria-describedby="passwordHelp"
+        formControlName="password"
+      />
+      <p *ngIf="form.controls.password.touched && !form.controls.password.valid" class="text-danger">Please enter a password</p>
+    </div>
+    <button type="submit" class="btn btn-primary"  (click)="onRegisterSubmit()">Submit</button>
+</form>
+</div>

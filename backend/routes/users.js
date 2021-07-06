@@ -34,7 +34,7 @@ router.post("/authenticate", (req, res, next) => {
     User.comparePassword(password, user.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch) {
-        const payload = lodash.pick(user, ["name", "email", "username"]);
+        const {password, __v, _id, ...payload} = user._doc;
         payload["sub"] = user._id;
         const accessToken = jwt.sign(payload, config.accessSecret, {
           expiresIn: 36000, //10 hours
@@ -110,9 +110,9 @@ router.get("/refresh", (req, res, next) => {
           success: false,
           msg: "User could not be found for token supplied",
         });
-      const payload = lodash.pick(user, ["name", "email", "username"]);
-      payload["sub"] = user._id;
-      const accessToken = jwt.sign(payload, config.accessSecret, {
+        const {password, __v, _id, ...payload} = user._doc;
+        payload["sub"] = user._id;
+        const accessToken = jwt.sign(payload, config.accessSecret, {
         expiresIn: 36000, //10 hours
       });
 
