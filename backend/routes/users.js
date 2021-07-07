@@ -4,7 +4,6 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const config = require("../config/database");
 const User = require("../models/user");
-const lodash = require("lodash");
 const RefreshToken = require("../models/refreshToken");
 
 // Register
@@ -129,5 +128,15 @@ router.get("/refresh", (req, res, next) => {
     });
   });
 });
+
+router.get('/check-username', (req, res, next) => {
+    User.getUserByUsername(req.query.username, (err, user) => {
+    if(err)
+      throw err;
+    if(user)
+      return res.json({doesExist: true});
+    return res.json({doesExist: false});
+  })
+})
 
 module.exports = router;

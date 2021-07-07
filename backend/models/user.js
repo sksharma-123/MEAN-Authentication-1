@@ -50,3 +50,8 @@ module.exports.comparePassword = (candidatePassword, hash, callback) => {
         callback(null, isMatch);
     })
 }
+
+module.exports.getUserByUsername = (username, callback) => {
+    const query = { username: username };
+    User.findOne(query, callback);
+}
