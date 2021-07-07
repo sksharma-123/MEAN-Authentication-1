@@ -20,4 +20,11 @@ export class UserService {
       catchError((err) => throwError(err))
     );
   }
+
+  checkEmail(email: string): Observable<DoesExist> {
+    return this.http.get<DoesExist>(`${this.apiUrl}/check-email?email=${email}`)
+    .pipe(
+      catchError((err) => throwError(err))
+    );
+  }
 }

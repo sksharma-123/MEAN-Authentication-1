@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
+import { CheckEmailValidator } from 'src/app/validators/check-email-validator';
 import { CheckUsernameValidator } from 'src/app/validators/username-validator';
 
 @Component({
@@ -26,7 +28,8 @@ export class RegisterComponent implements OnInit {
       CheckUsernameValidator.checkUsername(this.userService)),
       email: new FormControl('', [
         Validators.required, 
-        Validators.email]),
+        Validators.email],
+        CheckEmailValidator.checkEmail(this.userService)),
       password: new FormControl('', Validators.required)
     });
   }

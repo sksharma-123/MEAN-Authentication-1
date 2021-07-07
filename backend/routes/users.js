@@ -33,7 +33,7 @@ router.post("/authenticate", (req, res, next) => {
     User.comparePassword(password, user.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch) {
-        const {password, __v, _id, ...payload} = user._doc;
+        const { password, __v, _id, ...payload } = user._doc;
         payload["sub"] = user._id;
         const accessToken = jwt.sign(payload, config.accessSecret, {
           expiresIn: 36000, //10 hours
@@ -87,11 +87,14 @@ router.get(
 router.get("/refresh", (req, res, next) => {
   // Verify token
   jwt.verify(req.body.token, config.refreshSecret, (err, decodedPayload) => {
-    if(err) throw err;
-    if(!decodedPayload)
-      res.json(403, {success: false, msg: 'Token provided could not be verified'})
+    if (err) throw err;
+    if (!decodedPayload)
+      res.json(403, {
+        success: false,
+        msg: "Token provided could not be verified",
+      });
     return;
-  })
+  });
   // Find refresh token in db
   RefreshToken.findOne({ token: req.body.token }, (err, tokenEntry) => {
     if (err) throw err;
@@ -109,9 +112,9 @@ router.get("/refresh", (req, res, next) => {
           success: false,
           msg: "User could not be found for token supplied",
         });
-        const {password, __v, _id, ...payload} = user._doc;
-        payload["sub"] = user._id;
-        const accessToken = jwt.sign(payload, config.accessSecret, {
+      const { password, __v, _id, ...payload } = user._doc;
+      payload["sub"] = user._id;
+      const accessToken = jwt.sign(payload, config.accessSecret, {
         expiresIn: 36000, //10 hours
       });
 
@@ -129,14 +132,20 @@ router.get("/refresh", (req, res, next) => {
   });
 });
 
-router.get('/check-username', (req, res, next) => {
-    User.getUserByUsername(req.query.username, (err, user) => {
-    if(err)
-      throw err;
-    if(user)
-      return res.json({doesExist: true});
-    return res.json({doesExist: false});
-  })
-})
+router.get("/check-username", (req, res, next) => {
+  User.getUserByUsername(req.query.username, (err, user) => {
+    if (err) throw err;
+    if (user) return res.json({ doesExist: true });
+    return res.json({ doesExist: false });
+  });
+});
+
+router.get("/check-email", (req, res, next) => {
+  User.getUserByEmail(req.query.email, (err, user) => {
+    if (err) throw err;
+    if (user) return res.json({ doesExist: true });
+    return res.json({ doesExist: false });
+  });
+});
 
 module.exports = router;
