@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { EMPTY } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { CheckEmailValidator } from 'src/app/validators/check-email-validator';
 import { CheckUsernameValidator } from 'src/app/validators/username-validator';
@@ -15,7 +19,10 @@ export class RegisterComponent implements OnInit {
 
   form: FormGroup = this.initForm();
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService,
+              private notifier: NotifierService,
+              private authService: AuthService,
+              private router: Router) {}
 
   ngOnInit(): void {
   }
@@ -35,10 +42,19 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegisterSubmit() : void {
-    console.log(this.form);
     if(this.form.valid){
-      console.log('do something with the form');
       const user = <User>this.form.value;
+      this.authService.registerUser(user)
+      .pipe(
+        catchError(() => {
+          this.notifier.notify('Error', 'User could not be registered');
+          return EMPTY;
+        }),
+        tap(() => { 
+          this.notifier.notify('Success', 'User successfully registered');
+          this.router.navigate(['/login']);
+        })
+      ).subscribe();
     }
   }
 
