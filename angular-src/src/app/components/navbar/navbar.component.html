@@ -11,11 +11,14 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact: true}">
+              <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link active" aria-current="page" [routerLink]="['/login']">Login</a>
               </li>
               <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link active" aria-current="page" [routerLink]="['/register']">Register</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" (click)="onLogoutClick()" role="button">Logout</a>
               </li>
         </ul>   
       </div>

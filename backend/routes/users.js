@@ -28,7 +28,7 @@ router.post("/authenticate", (req, res, next) => {
 
   User.getUserByUsername(username, (err, user) => {
     if (err) throw err;
-    if (!user) return res.json({ success: false, msg: "User not found" });
+    if (!user) return res.status(401).json('User could not be found');
 
     User.comparePassword(password, user.password, (err, isMatch) => {
       if (err) throw err;
@@ -50,13 +50,9 @@ router.post("/authenticate", (req, res, next) => {
         RefreshToken.addRefreshToken(refreshTokenEntry, (err, token) => {
           if (err) throw err;
           if (!token)
-            return res.json({
-              success: false,
-              msg: "Error inserting refresh token",
-            });
+            return res.status(500).json('Error adding refresh token');
 
           return res.json({
-            success: true,
             accessToken: accessToken,
             refreshToken: refreshToken,
             user: {
@@ -68,7 +64,7 @@ router.post("/authenticate", (req, res, next) => {
           });
         });
       } else {
-        return res.json({ success: false, msg: "Wrong password" });
+        return res.status(401).json('User could not be authenticated');
       }
     });
   });
@@ -148,4 +144,12 @@ router.get("/check-email", (req, res, next) => {
   });
 });
 
+router.get('/logout', (req, res, next) => {
+  RefreshToken.removeRefreshToken(req.query.refreshToken, (err, refreshToken) => {
+    if(err) throw err;
+    if(refreshToken.deletedCount > 0) return res.status(200).json('User successfully logged out');
+    else
+      return res.status(200).json('No refresh token found');
+  })
+})
 module.exports = router;

@@ -1,1 +1,29 @@
-<p>login works!</p>
+<div class="container-fluid mt-5">
+    <h2 class="page-header">Register</h2>
+    <form [formGroup]="form">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          class="form-control border border-secondary"
+          id="username"
+          aria-describedby="nameHelp"
+          formControlName="username"
+        />
+        <p *ngIf="form.controls.username.touched && form.controls.username.errors?.required" class="text-danger">Please enter a usernamename</p>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control border border-secondary"
+          id="password"
+          aria-describedby="passwordHelp"
+          formControlName="password"
+        />
+        <p *ngIf="form.controls.password.touched && !form.controls.password.valid" class="text-danger">Please enter a password</p>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!this.form.valid" (click)="onLoginSubmit()">Login</button>
+  </form>
+  </div>
+  

@@ -15,7 +15,7 @@ import { CheckUsernameValidator } from 'src/app/validators/username-validator';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
   form: FormGroup = this.initForm();
 
@@ -23,9 +23,6 @@ export class RegisterComponent implements OnInit {
               private notifier: NotifierService,
               private authService: AuthService,
               private router: Router) {}
-
-  ngOnInit(): void {
-  }
 
   initForm(): FormGroup {
     return new FormGroup({

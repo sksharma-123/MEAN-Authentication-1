@@ -31,3 +31,7 @@ module.exports.addRefreshToken = (refreshToken, callback) => {
             refreshToken.save(callback);
     });
 }
+
+module.exports.removeRefreshToken = (refreshToken, callback) => {
+    RefreshToken.deleteOne({ token: refreshToken }, callback);
+}
