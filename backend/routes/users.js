@@ -75,7 +75,7 @@ router.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    res.json({ user: req.user });
+    res.json({ id: req.user._id, name: req.user.name, email: req.user.email, username: req.user.username });
   }
 );
 
@@ -115,7 +115,6 @@ router.get("/refresh", (req, res, next) => {
       });
 
       return res.json({
-        success: true,
         accessToken: accessToken,
         user: {
           id: user._id,

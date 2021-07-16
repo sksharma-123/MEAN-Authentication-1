@@ -44,12 +44,12 @@ export class RegisterComponent {
       this.authService.registerUser(user)
       .pipe(
         catchError(() => {
-          this.notifier.notify('Error', 'User could not be registered');
+          this.notifier.notify('error', 'User could not be registered');
           return EMPTY;
         }),
         tap(() => { 
-          this.notifier.notify('Success', 'User successfully registered');
-          this.router.navigate(['/login']);
+          this.notifier.notify('success', 'User successfully registered');
+          this.router.navigate(['login']);
         })
       ).subscribe();
     }

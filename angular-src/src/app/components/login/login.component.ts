@@ -6,6 +6,7 @@ import { EMPTY } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { AuthenticateUser } from 'src/app/models/authenticate-user';
 import { AuthService } from 'src/app/services/auth.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent {
 
   constructor(private authService: AuthService,
               private router: Router,
-              private notifier: NotifierService){}
+              private notifier: NotifierService,
+              private tokenService: TokenService){}
 
   form = this.initForm();
 
@@ -32,12 +34,13 @@ export class LoginComponent {
       this.authService.authenticateUser(<AuthenticateUser>this.form.value)
       .pipe(
         tap(() => { 
-          this.notifier.notify('Success', 'User successfully authenticated');
+          this.notifier.notify('success', 'User successfully authenticated');
+          this.tokenService.setLoginState(true);
           this.router.navigate(['dashboard']);
         }),
         catchError(() => 
         { 
-          this.notifier.notify('Error', 'User could not authenticated');
+          this.notifier.notify('error', 'User could not be authenticated');
           return EMPTY; 
         })
       ).subscribe();

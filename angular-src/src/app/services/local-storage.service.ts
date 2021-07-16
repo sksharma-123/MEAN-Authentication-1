@@ -30,7 +30,7 @@ export class LocalStorageService {
     localStorage.removeItem(this.REFRESH_TOKEN);
   }
 
-  storeUserData(user: TokenUser): void {
+  setUserData(user: TokenUser): void {
     localStorage.setItem('user', JSON.stringify(user));
   }
 

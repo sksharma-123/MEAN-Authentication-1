@@ -5,6 +5,7 @@ import { EMPTY } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,21 +14,25 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 })
 export class NavbarComponent {
 
+  isLoggedIn$ = this.tokenService.isLoggedIn$;
+
   constructor(private authService: AuthService,
               private notifierService: NotifierService,
               private localStorageService: LocalStorageService,
-              private router: Router) { }
+              private router: Router,
+              private tokenService: TokenService) { }
 
   onLogoutClick(): void {
     this.authService.logout(this.localStorageService.getRefreshToken())
     .pipe(
+      tap(() => this.tokenService.setLoginState(false)),
       catchError(() => { 
-        this.notifierService.notify('Error', 'User could not be logged out');
+        this.notifierService.notify('error', 'User could not be logged out');
         return EMPTY;
     }),
     tap(() => 
     {
-      this.notifierService.notify('Success', 'User successfully logged out');
+      this.notifierService.notify('success', 'User successfully logged out');
       this.router.navigate(['login']);
     })
     ).subscribe();

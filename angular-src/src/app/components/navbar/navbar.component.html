@@ -11,13 +11,19 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-              <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact: true}">
+              <li *ngIf="(isLoggedIn$ | async)" class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link active" aria-current="page" [routerLink]="['/dashboard']">Dashboard</a>
+              </li>
+              <li *ngIf="(isLoggedIn$ | async)" class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link active" aria-current="page" [routerLink]="['/profile']">Profile</a>
+              </li>
+              <li *ngIf="!(isLoggedIn$ | async)" class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link active" aria-current="page" [routerLink]="['/login']">Login</a>
               </li>
-              <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact: true}">
+              <li *ngIf="!(isLoggedIn$ | async)" class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link active" aria-current="page" [routerLink]="['/register']">Register</a>
               </li>
-              <li class="nav-item">
+              <li *ngIf="(isLoggedIn$ | async)" class="nav-item">
                 <a class="nav-link active" aria-current="page" (click)="onLogoutClick()" role="button">Logout</a>
               </li>
         </ul>   
